@@ -24,7 +24,7 @@ jobs:
           git clone --mirror https://github.com/windtf/wireproxy.git upstream.git
           cd upstream.git
 
-          DEST="https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/oboria/wireproxy-mirror.git"
+          DEST="https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/zeroauthid/wireproxy-mirror.git"
 
           # Force-update every upstream branch and tag onto the mirror, by exact
           # name. Deliberately NOT `git push --mirror`/`--prune` here: those
