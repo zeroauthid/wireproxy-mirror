@@ -7,9 +7,10 @@ userspace WireGuard client/proxy.
 
 ## Why this exists
 
-`oboria-admin-proxy` (see `common/procedures/it/claude-admin-proxy-architecture.md`
-in `oboria-org`) is adding a route ("Carrie") that needs a pinned `wireproxy`
-release binary. Claude Code sessions only get GitHub access to repositories
+`zeroauthid/claude-proxy` (see `common/procedures/it/claude-admin-proxy-architecture.md`
+in `zeroauthid/systems`) has a route ("Carrie") that needs a pinned `wireproxy`:
+its deploy builds `wireproxy` from this mirror at a pinned tag, checked
+against the expected commit. Claude Code sessions only get GitHub access to repositories
 already connected to this org, so a third-party repository like this one
 can never be reached directly from a session's usual GitHub tooling. This
 mirror makes it permanently reachable, without a per-session scope request
@@ -24,8 +25,9 @@ has the `v1.1.3` **tag** (a real git ref, pointing at the exact right
 commit), but not the compiled `wireproxy_*` binaries/`checksums.txt`
 attached to upstream's `v1.1.3` release — those still only exist at
 `https://github.com/windtf/wireproxy/releases/tag/v1.1.3` (still reachable
-read-only, same as any public repo). If `oboria-admin-proxy`'s "Carrie"
-route needs to serve those binaries from org-controlled infrastructure
+read-only, same as any public repo). `zeroauthid/claude-proxy` builds from
+source and does not use them. If its "Carrie"
+route ever needs to serve those binaries from org-controlled infrastructure
 rather than fetching them from upstream at deploy time, that needs a
 separate, deliberate step (e.g. mirroring the release itself onto this
 repository via the GitHub Releases API, or another storage location) — not
@@ -77,7 +79,8 @@ Setting this repository up from an interactive Claude Code session (not
 this workflow) hit a pre-existing, already-documented environment quirk:
 pushing *any* git tag from this kind of session's own git credential is
 rejected with an HTTP 403, regardless of repository or tag-protection
-settings — first documented in `oboria-org`'s `AGENTS.md` §9.4 for a
+settings — documented in `zeroauthid/systems`'s `AGENTS.md` §8.4 (first
+recorded 2026-09-03, in the repository now named `organization`) for a
 completely different repository, and reproduced identically here on a
 brand-new one, confirming it really is environment-wide rather than
 repository-specific. `git push --delete` of a branch hit the same 403.
